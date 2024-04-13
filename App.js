@@ -2,6 +2,7 @@ import express from 'express'
 import cors from 'cors';
 import mongoose from 'mongoose';
 import UserRoutes from './UserDB/routes.js';
+import LikesRoutes from './likes/routes.js';
 import session from 'express-session';
 import "dotenv/config";
 
@@ -31,4 +32,5 @@ app.use(session(sessionOptions));
 
 // const port = process.env.PORT || 4000;
 UserRoutes(app);
+LikesRoutes(app);
 app.listen(4000)

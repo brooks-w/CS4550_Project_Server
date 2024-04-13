@@ -11,6 +11,7 @@ const userSchema = mongoose.Schema({
     email: {type: String, unique: true},
     favSong: {type: String},
     favArtist: {type: String},
+    likesAlbum: [{ref: 'Albums', type: mongoose.Schema.Types.ObjectId}],
 }, {collection: 'usersDB'});
 
 export default userSchema;
