@@ -16,8 +16,10 @@ export const userLikesAlbum = async (userId, album) => {
 
 export const userUnlikesAlbum =
     async (userId, albumId) => {
-        const user = await model.findById(userId);
-        const album = await albumModel.findOne({ albumID: albumId });
+        let user = await model.findById(userId);
+        let album = await albumModel.findOne({ albumID: albumId });
+
+        console.log("album object from likedao: ", album);
 
         user.likesAlbum = user.likesAlbum.filter((id) => id !== album._id);
         album.likedBy = album.likedBy.filter((id) => id !== user._id);

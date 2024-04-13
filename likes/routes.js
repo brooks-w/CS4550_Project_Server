@@ -16,6 +16,7 @@ async (req, res) => {
    const currentUser = req.session["currentUser"];
    const userId = currentUser._id;
    const albumId = req.params.albumId;
+   console.log("route userID: %s, mbid: %s", userId, albumId);
    await dao.userUnlikesAlbum(userId, albumId);
    res.send("Unliked");
  });
