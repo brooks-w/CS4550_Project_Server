@@ -2,9 +2,9 @@ import express from 'express'
 import cors from 'cors';
 import mongoose from 'mongoose';
 import UserRoutes from './UserDB/routes.js';
-import LikesRoutes from './likes/routes.js';
 import session from 'express-session';
 import "dotenv/config";
+import AlbumsRoutes from './Albums/routes.js';
 
 mongoose.connect('mongodb://127.0.0.1:27017/CS4550-project');
 
@@ -32,5 +32,5 @@ app.use(session(sessionOptions));
 
 // const port = process.env.PORT || 4000;
 UserRoutes(app);
-LikesRoutes(app);
+AlbumsRoutes(app);
 app.listen(4000)
