@@ -1,6 +1,6 @@
 import mongoose from "mongoose";
-import albumSchema from "./shema.js";
+import albumSchema from "./schema.js";
 
-const albumModel = mongoose.model("Albums", albumSchema);
+const albumModel = mongoose.model('albums', albumSchema);
 
 export default albumModel;
