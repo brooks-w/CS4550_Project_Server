@@ -57,4 +57,5 @@ export default function UserRoutes(app) {
     app.post('/api/users/signout', signout);
     app.post('/api/users/profile', profile);
     app.get('/api/users/:userId', findUserById);
+
 }

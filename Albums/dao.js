@@ -22,7 +22,7 @@ export const userLikesAlbum = async (userId, album) => {
     actualAlbum.mbid = album.mbid;
     actualAlbum.name = album.name;
   }
-  user.likesAlbum.push(actualAlbum._id);
+  user.likesAlbum.push({album: actualAlbum._id, date: Date.now()});
   actualAlbum.likedBy.push(user._id);
 
   console.log("actualAlbum object from albumdao AFTER create: ", actualAlbum);
@@ -67,16 +67,19 @@ export const userUnlikesAlbum = async (userId, mbid) => {
 //     userList.push(model.findById(album.likedBy[i]))
 // }
 
-
-
 //   return userList;
 // };
 
 export const findUsersWhoLikedAlbum = async (mbid) => {
-    const album = await ((await albumModel.find({ mbid: mbid })).pop().populate("likedBy"));
+  try {
+    const album = await (await albumModel.find({ mbid: mbid }))
+      .pop()
+      .populate("likedBy");
 
     console.log("findUsersWhoLikedAlbum album after populate: ", album);
 
-
     return album.likedBy;
-  };
+  } catch (err) {
+    console.log("findUsersWhoLiked: ", err);
+  }
+};
