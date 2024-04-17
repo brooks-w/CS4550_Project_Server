@@ -45,8 +45,8 @@ export default function UserRoutes(app) {
             res.json(currentUser);
         }
     };
-    const findUserById = async (req, res) => {
-        const user = await dao.findUserById(req.params.userId);
+    const findUserByUsername = async (req, res) => {
+        const user = await dao.findUserByUsername(req.params.username);
         res.json(user);
       };
     
@@ -56,6 +56,6 @@ export default function UserRoutes(app) {
     app.post('/api/users/signin', signin);
     app.post('/api/users/signout', signout);
     app.post('/api/users/profile', profile);
-    app.get('/api/users/:userId', findUserById);
+    app.get('/api/users/:username', findUserByUsername);
 
 }
