@@ -7,9 +7,9 @@ const albumSchema = new mongoose.Schema(
         albumID: {type: String},
         albumId: {type: String},
         mbid: {type: String, unique: true},
-        likedBy: [
+        likes: [
 
-            { ref: "usersDB", type: mongoose.Schema.Types.ObjectId }],
+            { ref: "likes", type: mongoose.Schema.Types.ObjectId }],
     },
     { collection: "albums" }
 );
