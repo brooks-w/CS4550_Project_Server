@@ -1,23 +1,24 @@
 import albumModel from "./model.js";
 import model from "../UserDB/model.js";
 import { createLike } from "../Likes/dao.js";
+import likesModel from "../Likes/model.js";
 
-export const userLikesAlbum = async (userId, album) => {
-  const user = await model.findById(userId);
+// export const userLikesAlbum = async (userId, album) => {
+//   const user = await model.findById(userId);
 
-  let actualAlbum = await albumModel.findOne({ mbid: album.mbid });
+//   let actualAlbum = await albumModel.findOne({ mbid: album.mbid });
 
-  if (!actualAlbum) {
-    actualAlbum.mbid = album.mbid;
-    actualAlbum.name = album.name;
-    actualAlbum = await albumModel.create(album);
-  }
-  user.likesAlbum.push({album: actualAlbum._id, date: Date.now()});
-  actualAlbum.likedBy.push(user._id);
+//   if (!actualAlbum) {
+//     actualAlbum.mbid = album.mbid;
+//     actualAlbum.name = album.name;
+//     actualAlbum = await albumModel.create(album);
+//   }
+//   user.likesAlbum.push({ album: actualAlbum._id, date: Date.now() });
+//   actualAlbum.likedBy.push(user._id);
 
-  await user.save();
-  await actualAlbum.save();
-};
+//   await user.save();
+//   await actualAlbum.save();
+// };
 
 export const userUnlikesAlbum = async (userId, mbid) => {
   let user = await model.findById(userId);
@@ -32,14 +33,3 @@ export const userUnlikesAlbum = async (userId, mbid) => {
 };
 
 
-export const findUsersWhoLikedAlbum = async (mbid) => {
-  try {
-    const album = await (await albumModel.find({ mbid: mbid }))
-      .pop()
-      .populate("likedBy");
-
-    return album.likedBy;
-  } catch (err) {
-    console.log("findUsersWhoLiked: ", err);
-  }
-};

@@ -1,9 +1,10 @@
 import mongoose from "mongoose";
 
 const likeSchema = mongoose.Schema({
-    album: { ref: 'Albums', type: mongoose.Schema.Types.ObjectId },
+    album: { ref: 'Albums', type: String },
     user: { ref: 'usersDB', type: mongoose.Schema.Types.ObjectId },
-    date: { type: Date },
+    _id: { type: Date },
+
 }, {
     collection:
         "likes"

@@ -12,7 +12,6 @@ const userSchema = mongoose.Schema({
     email: {type: String, unique: true},
     favSong: {type: String},
     favArtist: {type: String},
-    likesAlbum: [{ref: 'likes', type: mongoose.Schema.Types.ObjectId}],
     claimedArtistMBID: {type: String}
 }, {collection: 'usersDB'});
 

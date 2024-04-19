@@ -1,67 +1,80 @@
-import * as dao from './dao';
-import model from '../UserDB/model';
-import albumModel from '../Albums/model';
+import * as dao from "./dao.js";
+import model from "../UserDB/model.js";
+import albumModel from "../Albums/model.js";
+import likesModel from "./model.js";
 
 export default function LikeRoutes(app) {
-
-const createLike = async (req, res) => { 
+  const createLike = async (req, res) => {
+    const userId = req.session["currentUser"]._id;
     const user = await model.findById(userId);
+    const album = req.body;
 
     let actualAlbum = await albumModel.findOne({ mbid: album.mbid });
-  
-    if (!actualAlbum) {
-        actualAlbum.mbid = album.mbid;
-        actualAlbum.name = album.name;
-      // If album is not found, create a new one
-      actualAlbum = await albumModel.create(album);
-    }
-    const like = dao.createLike(user, actualAlbum);
-    await like.save();
 
-    user.likesAlbum.push(like._id);
-    actualAlbum.likedBy.push(like._id);
+    if (!actualAlbum) {
+      // If album is not found, create a new one
+      album._id = album.mbid;
+      actualAlbum = await albumModel.create(album);
+      actualAlbum.mbid = album.mbid;
+      actualAlbum.name = album.name;
+    }
+
+    let id = Date.now();
+
+    const like = dao.createLike({
+      user: user._id,
+      album: album.mbid,
+      _id: id,
+    });
+
     
+
     await user.save();
     await actualAlbum.save();
-}
+  };
 
-const findAllLikes = async (req, res) => {
+  const findAllLikes = async (req, res) => {
     const likes = await dao.findAllLikes();
     res.json(likes);
-}
+  };
 
-const findLikeById = async (req, res) => {
+  const findLikeById = async (req, res) => {
     const likeId = req.params.likeId;
     const like = await dao.findLikeById(likeId);
     res.json(like);
+  };
 
-}
-
-const findLikeByUser = async (req, res) => {
+  const findLikesByUser = async (req, res) => {
     const user = req.params.user;
-    const like = await dao.findLikeByUser(user);
+    const like = await dao.findLikesByUser(user);
     res.json(like);
+  };
 
-}
-
-const findLikeByAlbum = async (req, res) => { 
+  const findLikesByAlbum = async (req, res) => {
     const album = req.params.album;
-    const like = await dao.findLikeByAlbum(album);
+    const like = await dao.findLikesByAlbum(album);
     res.json(like);
-}
+  };
 
-const deleteLike = async (req, res) => {
-    const likeId = req.params.likeId;
-    const status = await dao.deleteLike(likeId);
-    res.json(status);
-}
+  app.get("/api/albums/:mbid/likes", async (req, res) => {
+    const mbid = req.params.mbid;
+    const users = await dao.findUsersWhoLikedAlbum(mbid);
+    res.send(users);
+  });
 
+  app.delete("/api/likes/:mbid", async (req, res) => {
+    const userId = req.session["currentUser"]._id;
+    const user = await model.findById(userId);
+    const mbid = req.params.mbid;
+    console.log("route userID: %s, mbid: %s", userId, mbid);
+    await likesModel.deleteOne({album: mbid, user:user._id});
 
-app.post('/api/likes', createLike);
-app.get('/api/likes', findAllLikes);
-app.get('/api/likes/:likeId', findLikeById);
-app.get('/api/likes/user/:user', findLikeByUser);
-app.get('/api/likes/album/:album', findLikeByAlbum);
-app.delete('/api/likes/:likeId', deleteLike);
+    res.send("Unliked");
+  });
 
+  app.post("/api/likes/", createLike);
+  app.get("/api/likes", findAllLikes);
+  app.get("/api/likes/:likeId", findLikeById);
+  app.get("/api/likes/user/:user", findLikesByUser);
+  app.get("/api/likes/album/:album", findLikesByAlbum);
 }
