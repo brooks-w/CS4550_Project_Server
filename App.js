@@ -5,6 +5,7 @@ import UserRoutes from './UserDB/routes.js';
 import session from 'express-session';
 import "dotenv/config";
 import AlbumsRoutes from './Albums/routes.js';
+import LikeRoutes from './Likes/routes.js';
 
 mongoose.connect('mongodb://127.0.0.1:27017/CS4550-project');
 
@@ -33,4 +34,5 @@ app.use(session(sessionOptions));
 // const port = process.env.PORT || 4000;
 UserRoutes(app);
 AlbumsRoutes(app);
+LikeRoutes(app);
 app.listen(4000)
