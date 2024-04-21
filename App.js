@@ -7,7 +7,8 @@ import "dotenv/config";
 import AlbumsRoutes from './Albums/routes.js';
 import LikeRoutes from './Likes/routes.js';
 
-mongoose.connect('mongodb://127.0.0.1:27017/CS4550-project');
+const DB_CONNECTION_STRING = process.env.DB_CONNECTION_STRING || 'mongodb://127.0.0.1:27017/CS4550-project'
+mongoose.connect(DB_CONNECTION_STRING);
 
 const app = express();
 app.use(
