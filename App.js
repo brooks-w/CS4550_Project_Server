@@ -32,8 +32,8 @@ if (process.env.NODE_ENV !== "development") {
 }
 app.use(session(sessionOptions));
 
-// const port = process.env.PORT || 4000;
+const port = process.env.PORT || 4000;
 UserRoutes(app);
 AlbumsRoutes(app);
 LikeRoutes(app);
-app.listen(4000)
+app.listen(port)
