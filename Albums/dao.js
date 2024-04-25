@@ -20,16 +20,16 @@ import likesModel from "../Likes/model.js";
 //   await actualAlbum.save();
 // };
 
-export const userUnlikesAlbum = async (userId, mbid) => {
-  let user = await model.findById(userId);
-  let album = (await albumModel.find({ mbid: mbid })).pop();
+// export const userUnlikesAlbum = async (userId, mbid) => {
+//   let user = await model.findById(userId);
+//   let album = (await albumModel.find({ mbid: mbid })).pop();
 
-  await model.updateOne({ _id: userId }, { $pull: { likesAlbum: album._id } });
+//   await model.updateOne({ _id: userId }, { $pull: { likesAlbum: album._id } });
 
-  await albumModel.updateOne(
-    { _id: album._id },
-    { $pull: { likedBy: user._id } }
-  );
-};
+//   await albumModel.updateOne(
+//     { _id: album._id },
+//     { $pull: { likedBy: user._id } }
+//   );
+// };
 
 
